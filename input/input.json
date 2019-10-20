@@ -1,0 +1,14 @@
+{
+  "debtA": {
+    "total": 100,
+    "payment": 5
+  },
+  "debtB": {
+    "total": 210,
+    "payment": 20
+  },
+  "debtC": {
+    "total": 20,
+    "payment": 2
+  }
+}
