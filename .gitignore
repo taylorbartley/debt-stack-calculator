@@ -1,0 +1,26 @@
+# Compiled files
+*.py[cdo]
+
+# Egg metadata
+*.egg-info
+
+# Build directories
+.tox
+
+# Pipenv lock file
+Pipfile.lock
+
+# Editor files
+.vscode
+
+# Temp files
+~*
+.cache
+.coverage
+.mypy_cache
+.pytest_cache
+coverage.xml
+desktop.ini
+htmlcov
+
+reports

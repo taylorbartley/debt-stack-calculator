@@ -1,0 +1,45 @@
+output-format: grouped
+
+strictness: veryhigh
+doc-warnings: true
+test-warnings: true
+member-warnings: true
+
+autodetect: false
+
+pep257:
+    disable:
+        - D105
+        - D107
+        - D202
+        - D203
+        - D205
+        - D212
+        - D213
+        - D400
+        - D406
+        - D407
+        - D413
+        - D415
+
+pep8:
+    fule: true
+    disable:
+        - E122
+        - E123
+        # - E265
+        - N812
+    options:
+        max-line-lenght: 79
+
+pylint:
+    # enable:
+    #     - all
+    #     - fixme
+    disable:
+        - import-error
+        - logging-fstring-interpolation
+        - relative-beyond-top-level
+        - too-few-public-methods
+    options:
+        max-line-lenghth: 79
