@@ -7,8 +7,22 @@ and how long the total payout will be.
 # import math
 import json
 from operator import itemgetter
+from pathlib import Path
+from argparse import ArgumentParser
+import sys
 
-# import argparse
+
+def _parse_args(args):
+    """Parse inputs."""
+    parser = ArgumentParser()
+    parser.add_argument(
+        "-f",
+        "--input-file",
+        required=True,
+        help="File path to json input file.",
+    )
+
+    return parser.parse_args(args)
 
 
 def find_in_mapping(sequence, key, value):
@@ -73,25 +87,27 @@ def get_input(input_file):
 
 def main():
     """Do Main Method"""
-    data = get_input("input/sample_input.json")
-
+    args = _parse_args(sys.argv[1:])
+    data = get_input(Path(args.input_file).resolve())
+    output = Path(args.input_file.replace(".json", "_result.txt")).resolve()
+    output.touch(mode=0o664, exist_ok=True)
     sorted_debts = sort_debts(data)
 
     rolling_total = 0
-
-    for debt in sorted_debts:
-        print(
-            f"Payoff {debt['name']}.\n"
-            f"Total: {debt['total']}.\n"
-            f"Original monthly payment: ${debt['payment']}."
-        )
-        suggested = (
-            int(debt["payment"])
-            + (int(debt["payment"]) * 0.10)
-            + rolling_total
-        )
-        print(f"Suggested monthly payment: {suggested}.\n")
-        rolling_total += suggested
+    with open(output, mode="w", newline="") as out_file:
+        for debt in sorted_debts:
+            out_file.write(
+                f"Payoff {debt['name']}.\n"
+                f"Total: {debt['total']}.\n"
+                f"Original monthly payment: ${debt['payment']}."
+            )
+            suggested = (
+                int(debt["payment"])
+                + (int(debt["payment"]) * 0.10)
+                + rolling_total
+            )
+            out_file.write(f"Suggested monthly payment: {suggested}.\n")
+            rolling_total += suggested
 
 
 if __name__ == "__main__":
