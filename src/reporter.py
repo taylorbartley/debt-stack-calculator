@@ -73,17 +73,17 @@ def get_input(input_file):
 
 def main():
     """Do Main Method"""
-    data = get_input("input/input.json")
+    data = get_input("input/sample_input.json")
 
     sorted_debts = sort_debts(data)
-    print(sorted_debts)
 
     rolling_total = 0
 
     for debt in sorted_debts:
         print(
             f"Payoff {debt['name']}.\n"
-            f"Original monthly payment: ${debt['payment']}\n"
+            f"Total: {debt['total']}.\n"
+            f"Original monthly payment: ${debt['payment']}."
         )
         suggested = (
             int(debt["payment"])

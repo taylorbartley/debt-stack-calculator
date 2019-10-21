@@ -24,3 +24,5 @@ desktop.ini
 htmlcov
 
 reports
+
+input/debts.json

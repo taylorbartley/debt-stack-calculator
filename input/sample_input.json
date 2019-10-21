@@ -1,0 +1,19 @@
+{
+  "debts": [
+    {
+      "name": "debtA",
+      "total": 100,
+      "payment": 5
+    },
+    {
+      "name": "debtB",
+      "total": 210,
+      "payment": 20
+    },
+    {
+      "name": "debtC",
+      "total": 20,
+      "payment": 2
+    }
+  ]
+}
