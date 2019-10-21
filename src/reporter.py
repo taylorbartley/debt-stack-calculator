@@ -78,13 +78,20 @@ def main():
     sorted_debts = sort_debts(data)
     print(sorted_debts)
 
+    rolling_total = 0
+
     for debt in sorted_debts:
         print(
             f"Payoff {debt['name']}.\n"
             f"Original monthly payment: ${debt['payment']}\n"
-            f"Suggested monthly payment: "
-            f"${int(debt['payment']) + (int(debt['payment']) * 0.10)}\n"
         )
+        suggested = (
+            int(debt["payment"])
+            + (int(debt["payment"]) * 0.10)
+            + rolling_total
+        )
+        print(f"Suggested monthly payment: {suggested}.\n")
+        rolling_total += suggested
 
 
 if __name__ == "__main__":
