@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+# "aws-common" = {git = "ssh://git@alm.cgifederal.com/esda/aws-common.git",ref = "master"}
 
 [dev-packages]
 bandit = "*"
