@@ -4,7 +4,7 @@ Ingest list of debts.
 Determine which debts to pay in order,
 and how long the total payout will be.
 """
-# import math
+
 import json
 import math
 import sys
