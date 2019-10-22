@@ -6,10 +6,11 @@ and how long the total payout will be.
 """
 # import math
 import json
+import math
+import sys
+from argparse import ArgumentParser
 from operator import itemgetter
 from pathlib import Path
-from argparse import ArgumentParser
-import sys
 
 
 def _parse_args(args):
@@ -20,6 +21,12 @@ def _parse_args(args):
         "--input-file",
         required=True,
         help="File path to json input file.",
+    )
+    parser.add_argument(
+        "-u",
+        "--un-stack",
+        action="store_false",
+        help="Set to show stacked payment schedule.",
     )
 
     return parser.parse_args(args)
@@ -77,6 +84,11 @@ def sort_debts(data):
     return sort_mappings(mappings=debts, key="total", reverse=False)
 
 
+def get_payoff(debt, stacked_value=0):
+    """Retrieve the payout based on total vs. payments remaining."""
+    return math.ceil(debt["total"] / (debt["payment"] + stacked_value))
+
+
 def get_input(input_file):
     """Retrieve debt file."""
     data = {}
@@ -87,27 +99,56 @@ def get_input(input_file):
 
 def main():
     """Do Main Method"""
+
+    # # #
+    # Expected outcome of tests:
+    #     -  Original:
+    #     -  debtA = 20 Mos
+    #     -  debtB = 26.25 Mos
+    #     -  debtC = 10 Mos
+
+    #     -  Stacked:
+    #     -  debtC = 10 Mos
+    #     -  debtA = 16 Mos
+    #     -  debtB = 14 Mos
+    # # #
     args = _parse_args(sys.argv[1:])
     data = get_input(Path(args.input_file).resolve())
-    output = Path(args.input_file.replace(".json", "_result.txt")).resolve()
-    output.touch(mode=0o664, exist_ok=True)
+    # output = Path(args.input_file.replace(".json", "_result.txt")).resolve()
+    # output.touch(mode=0o664, exist_ok=True)
     sorted_debts = sort_debts(data)
+    # with open(output, mode="w", newline="") as out_file:
+    stacked = args.un_stack
 
-    rolling_total = 0
-    with open(output, mode="w", newline="") as out_file:
-        for debt in sorted_debts:
-            out_file.write(
-                f"Payoff {debt['name']}.\n"
-                f"Total: {debt['total']}.\n"
-                f"Original monthly payment: ${debt['payment']}."
+    stacked_value = 0
+    sub_payments = 0
+
+    for debt in sorted_debts:
+        if stacked:
+            print(
+                f"\nPayoff {debt['name']}\n"
+                f"Total: {debt['total']}\n"
+                f"Original monthly payment: ${debt['payment']}"
             )
             suggested = (
                 int(debt["payment"])
                 + (int(debt["payment"]) * 0.10)
-                + rolling_total
+                + stacked_value
             )
-            out_file.write(f"Suggested monthly payment: {suggested}.\n")
-            rolling_total += suggested
+            num_payments = get_payoff(debt, stacked_value=stacked_value)
+            print(f"Suggested monthly payment: {round(suggested, 2)}")
+            print(f"Total Months: {num_payments-sub_payments}")
+            stacked_value += suggested
+            sub_payments += 1
+        else:
+            print(
+                f"\nPayoff {debt['name']}\n"
+                f"Total: {debt['total']}\n"
+                f"Original monthly payment: ${round(debt['payment'], 2)}"
+            )
+
+            num_payments = get_payoff(debt)
+            print(f"Total Months: {num_payments}")
 
 
 if __name__ == "__main__":

@@ -3,12 +3,12 @@
     {
       "name": "debtA",
       "total": 100,
-      "payment": 10
+      "payment": 5
     },
     {
       "name": "debtB",
       "total": 210,
-      "payment": 21
+      "payment": 8
     },
     {
       "name": "debtC",
