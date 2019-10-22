@@ -8,12 +8,12 @@
     {
       "name": "debtB",
       "total": 210,
-      "payment": 20
+      "payment": 8
     },
     {
       "name": "debtC",
-      "total": 20,
-      "payment": 2
+      "total": 10,
+      "payment": 1
     }
   ]
 }
